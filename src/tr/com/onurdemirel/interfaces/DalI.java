@@ -1,4 +1,12 @@
 package tr.com.onurdemirel.interfaces;
 
-public class DalI {
+import java.util.List;
+
+public interface DalI<T> {
+    public void Insert(T entity);
+    public List<T> GetAll();
+    public T Delete(T entity);
+    public T Update(T entity);
+    public List<T> GetById(int id);
+
 }

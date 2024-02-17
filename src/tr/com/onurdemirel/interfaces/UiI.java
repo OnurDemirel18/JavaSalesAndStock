@@ -7,6 +7,6 @@ public interface UiI {
     public JPanel initPanel();
     public JMenuBar initBar();
     public JTabbedPane initTabs();
-    
+
 
 }

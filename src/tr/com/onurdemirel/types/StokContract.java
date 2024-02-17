@@ -1,4 +1,4 @@
-package tr.com.onurdemirel.contract;
+package tr.com.onurdemirel.types;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package tr.com.onurdemirel.contract;
+package tr.com.onurdemirel.types;
 
 public class HesaplarContract {
     private int hesapId;
