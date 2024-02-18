@@ -10,6 +10,7 @@ public class KategoriContract {
     }
 
     public void setKategoriId(int kategoriId) {
+
         this.kategoriId = kategoriId;
     }
 
@@ -18,7 +19,7 @@ public class KategoriContract {
         return kategoriAdi;
     }
 
-    public void GetKategoriAdi(String kategoriAdi) {
+    public void setKategoriAdi(String kategoriAdi) {
 
         this.kategoriAdi = kategoriAdi;
     }
@@ -37,6 +38,6 @@ public class KategoriContract {
     @Override
     public String toString() {
 
-        return kategoriId + " " + kategoriAdi + " " + parentId;
+        return kategoriAdi;
     }
 }

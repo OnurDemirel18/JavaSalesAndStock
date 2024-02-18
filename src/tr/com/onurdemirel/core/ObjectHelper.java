@@ -10,7 +10,7 @@ public class ObjectHelper extends CoreFields implements CoreI {
 
     static {
         try {
-            Class.forName("com.myql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
