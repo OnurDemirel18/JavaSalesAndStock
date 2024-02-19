@@ -1,6 +1,7 @@
 package tr.com.onurdemirel.ui;
 
 import tr.com.onurdemirel.dal.MusteriDal;
+import tr.com.onurdemirel.dal.SehirDal;
 import tr.com.onurdemirel.interfaces.UiI;
 import tr.com.onurdemirel.types.MusteriContract;
 
@@ -42,7 +43,7 @@ public class MusteriEkleCom extends JDialog implements UiI {
         panel.add(telefonField);
         JLabel sehirLabel = new JLabel("Şehir: ", JLabel.RIGHT);
         panel.add(sehirLabel);
-        JComboBox sehirBox = new JComboBox();
+        JComboBox sehirBox = new JComboBox(new SehirDal().GetAll().toArray());
         panel.add(sehirBox);
         JTextArea adresField = new JTextArea(5,1);
 
