@@ -1,10 +1,18 @@
-package tr.com.onurdemirel.utilities;
+package tr.com.onurdemirel.ui;
 
 import com.toedter.calendar.JDateChooser;
+import tr.com.onurdemirel.dal.KategoriDal;
 import tr.com.onurdemirel.interfaces.UiI;
+import tr.com.onurdemirel.types.KategoriContract;
+import tr.com.onurdemirel.types.UrunlerContract;
+import tr.com.onurdemirel.dal.UrunlerDal;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.logging.SimpleFormatter;
 
 public class UrunEkleCom extends JDialog implements UiI {
     public UrunEkleCom() {
@@ -39,7 +47,7 @@ public class UrunEkleCom extends JDialog implements UiI {
         JLabel kategoriLabel = new JLabel("Kategori ", JLabel.RIGHT);
         panel.add(kategoriLabel);
 
-        JComboBox kategoriBox = new JComboBox();
+        JComboBox kategoriBox = new JComboBox(new KategoriDal().GetAll().toArray());
         panel.add(kategoriBox);
 
         JLabel tarihLabel = new JLabel("Tarih", JLabel.RIGHT);
@@ -59,6 +67,23 @@ public class UrunEkleCom extends JDialog implements UiI {
 
         JButton kaydetButton = new JButton("Kaydet");
         panel.add(kaydetButton);
+        kaydetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UrunlerContract contract = new UrunlerContract();
+                KategoriContract casContract = (KategoriContract) kategoriBox.getSelectedItem();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String date = format.format(tarihChooser.getDate());
+                contract.setUrunAdi(adiField.getText());
+                contract.setUrunKategoriId(casContract.getKategoriId());
+                contract.setUrunTarih(java.sql.Date.valueOf(date));
+                contract.setUrunFiyat(Float.parseFloat(fiyatField.getText()));
+
+
+                new UrunlerDal().Insert(contract);
+                JOptionPane.showMessageDialog(null, contract.getUrunAdi() + " Ürünü Eklendi");
+            }
+        });
 
 
 

@@ -1,4 +1,4 @@
-package tr.com.onurdemirel.utilities;
+package tr.com.onurdemirel.ui;
 
 import tr.com.onurdemirel.dal.KategoriDal;
 import tr.com.onurdemirel.interfaces.UiI;
