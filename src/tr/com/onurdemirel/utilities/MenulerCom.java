@@ -46,6 +46,18 @@ public class MenulerCom {
         JMenuItem sifreDuzenleItem = new JMenuItem("Şifre Düzenle");
         personellerMenu.add(sifreDuzenleItem);
 
+        JMenu musteriMenu = new JMenu("Müşteriler");
+        bar.add(musteriMenu);
+        JMenuItem musteriEkleItem = new JMenuItem("Müşteri Ekle");
+        musteriMenu.add(musteriEkleItem);
+        JMenuItem sehirEkleItem = new JMenuItem("Şehir Ekle");
+        musteriMenu.add(sehirEkleItem);
+        musteriMenu.addSeparator();
+        JMenuItem musteriDuzenleItem = new JMenuItem("Müşteri Düzenle");
+        musteriMenu.add(musteriDuzenleItem);
+        JMenuItem sehirDuzenleItem = new JMenuItem("Şehir Düzenle");
+        musteriMenu.add(sehirDuzenleItem);
+
 
 
 
@@ -102,6 +114,18 @@ public class MenulerCom {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new SifreBelirleCom();
+            }
+        });
+
+        musteriEkleItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        new MusteriEkleCom();
+                    }
+                });
             }
         });
 
