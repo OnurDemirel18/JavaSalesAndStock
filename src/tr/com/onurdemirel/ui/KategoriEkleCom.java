@@ -78,6 +78,13 @@ public class KategoriEkleCom extends JDialog implements UiI {
             }
         });
 
+        iptalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+
 
 
 

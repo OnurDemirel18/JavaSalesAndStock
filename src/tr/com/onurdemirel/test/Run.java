@@ -1,5 +1,6 @@
 package tr.com.onurdemirel.test;
 
+import tr.com.onurdemirel.ui.LoginCom;
 import tr.com.onurdemirel.ui.MainWindowUi;
 
 import javax.swing.*;
@@ -21,7 +22,7 @@ public class Run {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new MainWindowUi();
+                new LoginCom();
             }
         });
     }

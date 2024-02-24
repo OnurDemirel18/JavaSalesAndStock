@@ -68,6 +68,10 @@ public class MusteriEkleCom extends JDialog implements UiI {
             JOptionPane.showMessageDialog(null, "Müşteri Eklendi");
         });
 
+        iptalButton.addActionListener(e -> {
+            setVisible(false);
+        });
+
         fieldPanel.add(panel, BorderLayout.NORTH);
         fieldPanel.add(pane, BorderLayout.CENTER);
         fieldPanel.add(buttonPanel, BorderLayout.SOUTH);
