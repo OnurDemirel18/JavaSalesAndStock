@@ -2,6 +2,7 @@ package tr.com.onurdemirel.ui;
 
 import com.toedter.calendar.JDateChooser;
 import tr.com.onurdemirel.complex.types.StokContractComplex;
+import tr.com.onurdemirel.complex.types.StokContractToplamComplex;
 import tr.com.onurdemirel.dal.SatisDal;
 import tr.com.onurdemirel.dal.StokDal;
 import tr.com.onurdemirel.dal.UrunlerDal;
@@ -67,7 +68,7 @@ public class MainWindowUi extends JFrame implements UiI {
 
         //Stok İşlemleri
         JPanel stokSolPanel = new JPanel(new BorderLayout());
-        JPanel stokSolUstPanel = new JPanel(new GridLayout(4,2));
+        JPanel stokSolUstPanel = new JPanel(new GridLayout(5,2));
         JPanel stokSolAltPanel = new JPanel();
         stokSolPanel.setBorder(BorderFactory.createTitledBorder("Stoklar"));
         String[] stokKolonlar = {"Id","Personel Ad","Ürün Ad","Adet","Tarih"};
@@ -95,6 +96,20 @@ public class MainWindowUi extends JFrame implements UiI {
         stokSolUstPanel.add(stokGuncelleButton);
         JButton stokEkleButton = new JButton("Ekle");
         stokSolUstPanel.add(stokEkleButton);
+        JButton stokToplamButton = new JButton("Stok Toplam");
+        stokSolUstPanel.add(stokToplamButton);
+        stokGuncelleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int satir = stokModel.getRowCount();
+                for (int i = 0; i < satir; i++) {
+                    stokModel.removeRow(0);
+                }
+                for (StokContractComplex stokContractComplex: new StokDal().GetAllStok()){
+                    stokModel.addRow(new Object[]{stokContractComplex.getId(),stokContractComplex.getPersonelAdi(),stokContractComplex.getUrunAdi(),stokContractComplex.getAdet(),stokContractComplex.getTarih()});
+                }
+            }
+        });
 
         stokEkleButton.addActionListener(new ActionListener() {
             @Override
@@ -120,6 +135,19 @@ public class MainWindowUi extends JFrame implements UiI {
                 }
                 for (StokContractComplex stokContractComplex: new StokDal().GetAllStok()){
                     stokModel.addRow(new Object[]{stokContractComplex.getId(),stokContractComplex.getPersonelAdi(),stokContractComplex.getUrunAdi(),stokContractComplex.getAdet(),stokContractComplex.getTarih()});
+                }
+            }
+        });
+
+        stokToplamButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int satir = stokModel.getRowCount();
+                for (int i = 0; i < satir; i++) {
+                    stokModel.removeRow(0);
+                }
+                for (StokContractToplamComplex stokContractToplamComplex: new StokDal().GetToplamStok()){
+                    stokModel.addRow(new Object[]{stokContractToplamComplex.getId(),stokContractToplamComplex.getPersonelAdi(),stokContractToplamComplex.getUrunAdi(),stokContractToplamComplex.getToplam(),stokContractToplamComplex.getTarih()});
                 }
             }
         });
@@ -151,6 +179,7 @@ public class MainWindowUi extends JFrame implements UiI {
         satisSagUstPanel.add(satisGuncelleButton);
         JButton satisEkleButton = new JButton("Ekle");
         satisSagUstPanel.add(satisEkleButton);
+
 
         stokPanel.add(stokSolPanel,BorderLayout.WEST);
         stokPanel.add(stokTablePane,BorderLayout.CENTER);
