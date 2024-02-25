@@ -16,6 +16,6 @@ public class UrunlerContract {
 
     @Override
     public String toString() {
-        return urunId + " " + urunAdi + " " + urunKategoriId + " " + urunTarih + " " + urunFiyat;
+        return urunAdi;
     }
 }

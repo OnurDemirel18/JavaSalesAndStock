@@ -1,13 +1,24 @@
 package tr.com.onurdemirel.ui;
 
 import com.toedter.calendar.JDateChooser;
+import tr.com.onurdemirel.complex.types.StokContractComplex;
+import tr.com.onurdemirel.dal.SatisDal;
+import tr.com.onurdemirel.dal.StokDal;
+import tr.com.onurdemirel.dal.UrunlerDal;
 import tr.com.onurdemirel.interfaces.UiI;
+import tr.com.onurdemirel.types.PersonelContract;
+import tr.com.onurdemirel.types.SatisContract;
+import tr.com.onurdemirel.types.StokContract;
+import tr.com.onurdemirel.types.UrunlerContract;
 import tr.com.onurdemirel.utilities.MenulerCom;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 
 public class MainWindowUi extends JFrame implements UiI {
     public MainWindowUi() {
@@ -60,13 +71,16 @@ public class MainWindowUi extends JFrame implements UiI {
         JPanel stokSolAltPanel = new JPanel();
         stokSolPanel.setBorder(BorderFactory.createTitledBorder("Stoklar"));
         String[] stokKolonlar = {"Id","Personel Ad","Ürün Ad","Adet","Tarih"};
-        DefaultTableModel model = new DefaultTableModel(stokKolonlar,0);
-        JTable table = new JTable(model);
-        JScrollPane stokTablePane = new JScrollPane(table);
+        DefaultTableModel stokModel = new DefaultTableModel(stokKolonlar,0);
+        JTable stokTable = new JTable(stokModel);
+        JScrollPane stokTablePane = new JScrollPane(stokTable);
 
+        for (StokContractComplex stokContractComplex: new StokDal().GetAllStok()){
+            stokModel.addRow(new Object[]{stokContractComplex.getId(),stokContractComplex.getPersonelAdi(),stokContractComplex.getUrunAdi(),stokContractComplex.getAdet(),stokContractComplex.getTarih()});
+        }
         JLabel stokUrunAdiLabel = new JLabel("Ürün Adı",JLabel.RIGHT);
         stokSolUstPanel.add(stokUrunAdiLabel);
-        JComboBox stokUrunAdiBox = new JComboBox();
+        JComboBox stokUrunAdiBox = new JComboBox(new UrunlerDal().GetAll().toArray());
         stokSolUstPanel.add(stokUrunAdiBox);
         JLabel stokAdetLabel = new JLabel("Adet",JLabel.RIGHT);
         stokSolUstPanel.add(stokAdetLabel);
@@ -82,15 +96,43 @@ public class MainWindowUi extends JFrame implements UiI {
         JButton stokEkleButton = new JButton("Ekle");
         stokSolUstPanel.add(stokEkleButton);
 
+        stokEkleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StokContract contract = new StokContract();
+                UrunlerContract uContract = (UrunlerContract) stokUrunAdiBox.getSelectedItem();
+                PersonelContract pContract = (PersonelContract) LoginCom.emailBox.getSelectedItem();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String date = format.format(stokTarih.getDate());
+                contract.setPersonelId(pContract.getPersonelId());
+                contract.setUrunId(uContract.getUrunId());
+                contract.setTarih(java.sql.Date.valueOf(date));
+                contract.setAdet(Integer.parseInt(stokAdetField.getText()));
+
+
+                new StokDal().Insert(contract);
+
+                JOptionPane.showMessageDialog(null, uContract.getUrunAdi() + " Ürünü Eklendi");
+
+                int satir = stokModel.getRowCount();
+                for (int i = 0; i < satir; i++) {
+                    stokModel.removeRow(0);
+                }
+                for (StokContractComplex stokContractComplex: new StokDal().GetAllStok()){
+                    stokModel.addRow(new Object[]{stokContractComplex.getId(),stokContractComplex.getPersonelAdi(),stokContractComplex.getUrunAdi(),stokContractComplex.getAdet(),stokContractComplex.getTarih()});
+                }
+            }
+        });
+
         //Satis İşlemleri
         JPanel satisSagPanel = new JPanel(new BorderLayout());
         JPanel satisSagUstPanel = new JPanel(new GridLayout(4,2));
         JPanel satisSagAltPanel = new JPanel();
-        satisSagPanel.setBorder(BorderFactory.createTitledBorder("Stoklar"));
+        satisSagPanel.setBorder(BorderFactory.createTitledBorder("Satışlar"));
         String[] satisKolonlar = {"Id","Personel Ad","Müsteri Ad","Ürün Ad","Adet","Tarih"};
         DefaultTableModel satismodel = new DefaultTableModel(satisKolonlar,0);
         JTable satisTable = new JTable(satismodel);
-        JScrollPane satisTablePane = new JScrollPane(table);
+        JScrollPane satisTablePane = new JScrollPane(satisTable);
 
         JLabel satisUrunAdiLabel = new JLabel("Ürün Adı",JLabel.RIGHT);
         satisSagUstPanel.add(satisUrunAdiLabel);

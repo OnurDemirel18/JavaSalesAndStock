@@ -2,11 +2,14 @@ package tr.com.onurdemirel.dal;
 
 import tr.com.onurdemirel.core.ObjectHelper;
 import tr.com.onurdemirel.interfaces.DalI;
+import tr.com.onurdemirel.types.KategoriContract;
 import tr.com.onurdemirel.types.UrunlerContract;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 // Bu sınıfın amacı veritabanı işlemlerini yapmaktır. UrunlerContract sınıfı ile çalışır.
@@ -39,7 +42,27 @@ public class UrunlerDal extends ObjectHelper implements DalI<UrunlerContract> {
 
     @Override
     public List<UrunlerContract> GetAll() {
-        return null;
+        List<UrunlerContract> datacontract = new ArrayList<UrunlerContract>();
+        UrunlerContract contract;
+        Connection connection = getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM urunler");
+            while (resultSet.next()){
+                contract = new UrunlerContract();
+                contract.setUrunId(resultSet.getInt("urunId"));
+                contract.setUrunAdi(resultSet.getString("urunAdi"));
+                contract.setUrunKategoriId(resultSet.getInt("urunKategoriId"));
+                contract.setUrunTarih(resultSet.getDate("urunTarih"));
+                datacontract.add(contract);
+                System.out.println(resultSet.getString("urunAdi"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return datacontract;
+
+
     }
 
     @Override

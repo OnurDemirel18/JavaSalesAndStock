@@ -1,5 +1,6 @@
 package tr.com.onurdemirel.test;
 
+import tr.com.onurdemirel.dal.UrunlerDal;
 import tr.com.onurdemirel.ui.LoginCom;
 import tr.com.onurdemirel.ui.MainWindowUi;
 
@@ -22,7 +23,10 @@ public class Run {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+
+
                 new LoginCom();
+                //new UrunlerDal().GetAll();
             }
         });
     }
