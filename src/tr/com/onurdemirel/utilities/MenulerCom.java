@@ -1,5 +1,7 @@
 package tr.com.onurdemirel.utilities;
 
+import tr.com.onurdemirel.dal.HesaplarDal;
+import tr.com.onurdemirel.types.PersonelContract;
 import tr.com.onurdemirel.ui.*;
 
 import javax.swing.*;
@@ -57,6 +59,15 @@ public class MenulerCom {
         musteriMenu.add(musteriDuzenleItem);
         JMenuItem sehirDuzenleItem = new JMenuItem("Şehir Düzenle");
         musteriMenu.add(sehirDuzenleItem);
+        PersonelContract contract = (PersonelContract) LoginCom.emailBox.getSelectedItem();
+
+        if(new HesaplarDal().GetYetkiId(contract.getPersonelId()).getYetkiId() ==2 ){
+            personellerMenu.hide();
+        }else if(new HesaplarDal().GetYetkiId(contract.getPersonelId()).getYetkiId() ==3){
+            musteriMenu.hide();
+            personellerMenu.hide();
+            urunMenu.hide();
+        }
 
 
 

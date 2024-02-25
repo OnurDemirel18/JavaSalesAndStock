@@ -53,6 +53,26 @@ public class HesaplarDal extends ObjectHelper implements DalI<HesaplarContract> 
         return contract;
 
     }
+    public HesaplarContract GetYetkiId(int personelId) {
+        HesaplarContract contract = new HesaplarContract();
+        List<HesaplarContract> datacontract = new ArrayList<HesaplarContract>();
+
+        Connection connection = getConnection();
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM accounts WHERE personelId ="+personelId+"");
+            while (resultSet.next()){
+                contract.setHesapId(resultSet.getInt("hesapId"));
+                contract.setPersonelId(resultSet.getInt("personelId"));
+                contract.setYetkiId(resultSet.getInt("yetkiId"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return contract;
+
+    }
     @Override
     public List<HesaplarContract> GetAll() {
         return null;
