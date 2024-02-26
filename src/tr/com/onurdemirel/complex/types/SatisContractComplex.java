@@ -15,6 +15,11 @@ public class SatisContractComplex {
     private int adet;
     private Date tarih;
 
+    public Object[] getVeriler(){
+        Object[] veriler = {satisId, musteriAdi, personelAdi, urunAdi, adet, tarih};
+        return veriler;
+    }
+
     public String toString() {
         return  musteriAdi + " " + personelAdi + " " + urunAdi ;
     }

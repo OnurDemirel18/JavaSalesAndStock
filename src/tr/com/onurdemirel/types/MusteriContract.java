@@ -16,6 +16,6 @@ public class MusteriContract {
 
     @Override
     public String toString() {
-        return musteriId + " " + musteriAdiSoyadi+ " " + sehirId+ " " + musteriAdres+ " " + musteriTelefon;
+        return musteriAdiSoyadi;
     }
 }

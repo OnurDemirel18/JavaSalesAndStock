@@ -1,16 +1,15 @@
 package tr.com.onurdemirel.ui;
 
 import com.toedter.calendar.JDateChooser;
+import tr.com.onurdemirel.complex.types.SatisContractComplex;
 import tr.com.onurdemirel.complex.types.StokContractComplex;
 import tr.com.onurdemirel.complex.types.StokContractToplamComplex;
+import tr.com.onurdemirel.dal.MusteriDal;
 import tr.com.onurdemirel.dal.SatisDal;
 import tr.com.onurdemirel.dal.StokDal;
 import tr.com.onurdemirel.dal.UrunlerDal;
 import tr.com.onurdemirel.interfaces.UiI;
-import tr.com.onurdemirel.types.PersonelContract;
-import tr.com.onurdemirel.types.SatisContract;
-import tr.com.onurdemirel.types.StokContract;
-import tr.com.onurdemirel.types.UrunlerContract;
+import tr.com.onurdemirel.types.*;
 import tr.com.onurdemirel.utilities.MenulerCom;
 
 import javax.swing.*;
@@ -142,6 +141,8 @@ public class MainWindowUi extends JFrame implements UiI {
         stokToplamButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+
                 int satir = stokModel.getRowCount();
                 for (int i = 0; i < satir; i++) {
                     stokModel.removeRow(0);
@@ -149,22 +150,29 @@ public class MainWindowUi extends JFrame implements UiI {
                 for (StokContractToplamComplex stokContractToplamComplex: new StokDal().GetToplamStok()){
                     stokModel.addRow(new Object[]{stokContractToplamComplex.getId(),stokContractToplamComplex.getPersonelAdi(),stokContractToplamComplex.getUrunAdi(),stokContractToplamComplex.getToplam(),stokContractToplamComplex.getTarih()});
                 }
+
+
+
             }
         });
 
         //Satis İşlemleri
         JPanel satisSagPanel = new JPanel(new BorderLayout());
-        JPanel satisSagUstPanel = new JPanel(new GridLayout(4,2));
+        JPanel satisSagUstPanel = new JPanel(new GridLayout(6,2));
         JPanel satisSagAltPanel = new JPanel();
         satisSagPanel.setBorder(BorderFactory.createTitledBorder("Satışlar"));
         String[] satisKolonlar = {"Id","Personel Ad","Müsteri Ad","Ürün Ad","Adet","Tarih"};
         DefaultTableModel satismodel = new DefaultTableModel(satisKolonlar,0);
         JTable satisTable = new JTable(satismodel);
         JScrollPane satisTablePane = new JScrollPane(satisTable);
+        JLabel musteriLabel = new JLabel("Müşteri Adı",JLabel.RIGHT);
+        satisSagUstPanel.add(musteriLabel);
+        JComboBox musteriBox = new JComboBox(new MusteriDal().GetAll().toArray());
+        satisSagUstPanel.add(musteriBox);
 
         JLabel satisUrunAdiLabel = new JLabel("Ürün Adı",JLabel.RIGHT);
         satisSagUstPanel.add(satisUrunAdiLabel);
-        JComboBox satisUrunAdiBox = new JComboBox();
+        JComboBox satisUrunAdiBox = new JComboBox(new UrunlerDal().GetAll().toArray());
         satisSagUstPanel.add(satisUrunAdiBox);
         JLabel satisAdetLabel = new JLabel("Adet",JLabel.RIGHT);
         satisSagUstPanel.add(satisAdetLabel);
@@ -177,8 +185,64 @@ public class MainWindowUi extends JFrame implements UiI {
 
         JButton satisGuncelleButton = new JButton("Güncelle");
         satisSagUstPanel.add(satisGuncelleButton);
-        JButton satisEkleButton = new JButton("Ekle");
+        JButton satisEkleButton = new JButton("Sat");
         satisSagUstPanel.add(satisEkleButton);
+
+
+        for (SatisContractComplex satisContractComplex: new SatisDal().GetAllSatis()){
+            satismodel.addRow(new Object[]{satisContractComplex.getSatisId(),satisContractComplex.getPersonelAdi(),satisContractComplex.getMusteriAdi(),satisContractComplex.getUrunAdi(),satisContractComplex.getAdet(),satisContractComplex.getTarih()});
+        }
+
+        satisGuncelleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int satir = satismodel.getRowCount();
+                for (int i = 0; i < satir; i++) {
+                    satismodel.removeRow(0);
+                }
+                for (SatisContractComplex satisContractComplex: new SatisDal().GetAllSatis()){
+                    satismodel.addRow(new Object[]{satisContractComplex.getSatisId(),satisContractComplex.getPersonelAdi(),satisContractComplex.getMusteriAdi(),satisContractComplex.getUrunAdi(),satisContractComplex.getAdet(),satisContractComplex.getTarih()});
+                }
+            }
+        });
+        satisEkleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PersonelContract pContract = (PersonelContract) LoginCom.emailBox.getSelectedItem();
+                UrunlerContract uContract = (UrunlerContract) satisUrunAdiBox.getSelectedItem();
+                MusteriContract mContract = (MusteriContract) musteriBox.getSelectedItem();
+                SatisContract contract = new SatisContract();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String date = format.format(satisTarih.getDate());
+
+                contract.setPersonelId(pContract.getPersonelId());
+                contract.setUrunId(uContract.getUrunId());
+                contract.setMusteriId(mContract.getMusteriId());
+                contract.setTarih(java.sql.Date.valueOf(date));
+                contract.setAdet(Integer.parseInt(satisAdetField.getText()));
+
+
+                new SatisDal().Insert(contract);
+                StokContract stokContract = new StokContract();
+                stokContract.setAdet(stokContract.getAdet() - Integer.parseInt(satisAdetField.getText()));
+                stokContract.setPersonelId(pContract.getPersonelId());
+                stokContract.setUrunId(uContract.getUrunId());
+                stokContract.setTarih(java.sql.Date.valueOf(date));
+                stokContract.setAdet(-Integer.parseInt(satisAdetField.getText()));
+                new StokDal().Insert(stokContract);
+
+                JOptionPane.showMessageDialog(null, uContract.getUrunAdi() + " Ürünü Satıldı");
+
+                int satir = satismodel.getRowCount();
+                for (int i = 0; i < satir; i++) {
+                    satismodel.removeRow(0);
+                }
+                for (SatisContractComplex satisContractComplex: new SatisDal().GetAllSatis()){
+                    satismodel.addRow(new Object[]{satisContractComplex.getSatisId(),satisContractComplex.getPersonelAdi(),satisContractComplex.getMusteriAdi(),satisContractComplex.getUrunAdi(),satisContractComplex.getAdet(),satisContractComplex.getTarih()});
+                }
+
+            }
+        });
 
 
         stokPanel.add(stokSolPanel,BorderLayout.WEST);

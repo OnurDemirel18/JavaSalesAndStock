@@ -55,6 +55,7 @@ public class LoginCom extends JDialog implements UiI {
                 PersonelContract contract = (PersonelContract) emailBox.getSelectedItem();
                 if(new HesaplarDal().GetPersonelIdVeSifre(contract.getPersonelId(),sifreField.getText()).getHesapId()!= 0 ) {
                     new MainWindowUi();
+                    setVisible(false);
                 }
                 else {
                     JOptionPane.showMessageDialog(null,"Şifre hatalı");

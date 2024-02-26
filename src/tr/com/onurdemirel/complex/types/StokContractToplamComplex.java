@@ -21,6 +21,6 @@ public class StokContractToplamComplex {
     }
 
     public String toString() {
-        return  personelAdi + " " + urunAdi ;
+        return urunAdi;
     }
 }
