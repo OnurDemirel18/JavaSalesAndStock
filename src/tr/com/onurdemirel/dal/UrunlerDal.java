@@ -55,7 +55,7 @@ public class UrunlerDal extends ObjectHelper implements DalI<UrunlerContract> {
                 contract.setUrunKategoriId(resultSet.getInt("urunKategoriId"));
                 contract.setUrunTarih(resultSet.getDate("urunTarih"));
                 datacontract.add(contract);
-                System.out.println(resultSet.getString("urunAdi"));
+
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -71,8 +71,8 @@ public class UrunlerDal extends ObjectHelper implements DalI<UrunlerContract> {
     }
 
     @Override
-    public UrunlerContract Update(UrunlerContract entity) {
-        return null;
+    public void Update(UrunlerContract entity) {
+
     }
 
     @Override

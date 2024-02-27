@@ -59,8 +59,8 @@ public class PersonelDal extends ObjectHelper implements DalI<PersonelContract> 
     }
 
     @Override
-    public PersonelContract Update(PersonelContract entity) {
-        return null;
+    public void Update(PersonelContract entity) {
+
     }
 
     @Override

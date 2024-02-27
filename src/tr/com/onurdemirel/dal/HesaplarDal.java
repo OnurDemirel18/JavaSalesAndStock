@@ -84,8 +84,8 @@ public class HesaplarDal extends ObjectHelper implements DalI<HesaplarContract> 
     }
 
     @Override
-    public HesaplarContract Update(HesaplarContract entity) {
-        return null;
+    public void Update(HesaplarContract entity) {
+
     }
 
     @Override

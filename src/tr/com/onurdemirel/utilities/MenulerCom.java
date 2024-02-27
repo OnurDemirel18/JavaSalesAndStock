@@ -30,6 +30,17 @@ public class MenulerCom {
         urunMenu.add(urunDuzenleItem);
         JMenuItem kategoriDuzenleItem = new JMenuItem("Kategori Düzenle");
         urunMenu.add(kategoriDuzenleItem);
+        kategoriDuzenleItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        new KategoriDuzenleCom();
+                    }
+                });
+            }
+        });
 
         //Personel Menüsü
         JMenu personellerMenu = new JMenu("Personeller");

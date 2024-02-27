@@ -59,8 +59,8 @@ public class MusteriDal extends ObjectHelper implements DalI<MusteriContract> {
     }
 
     @Override
-    public MusteriContract Update(MusteriContract entity) {
-        return null;
+    public void Update(MusteriContract entity) {
+
     }
 
     @Override

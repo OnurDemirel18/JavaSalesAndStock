@@ -60,8 +60,8 @@ public class SatisDal extends ObjectHelper implements DalI<SatisContract> {
     }
 
     @Override
-    public SatisContract Update(SatisContract entity) {
-        return null;
+    public void Update(SatisContract entity) {
+
     }
 
     @Override

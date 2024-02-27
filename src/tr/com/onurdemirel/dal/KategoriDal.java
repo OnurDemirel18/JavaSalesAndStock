@@ -75,13 +75,40 @@ public class KategoriDal extends ObjectHelper implements DalI<KategoriContract> 
     }
 
     @Override
-    public KategoriContract Update(KategoriContract entity) {
-        return null;
+    public void Update(KategoriContract entity) {
+        Connection connection = getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("UPDATE kategori SET kategoriAdi = '" + entity.getKategoriAdi() + "', parentId = " + entity.getParentId() + " WHERE kategoriId = " + entity.getKategoriId()+ "");
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public List<KategoriContract> GetById(int id) {
         return null;
+    }
+
+    public List<KategoriContract> GetSearchKategori(String kategoriAdi) {
+        List<KategoriContract> datacontract = new ArrayList<KategoriContract>();
+
+        Connection connection = getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM kategori WHERE kategoriAdi LIKE '%" + kategoriAdi + "%'");
+            while (resultSet.next()){
+                KategoriContract contract = new KategoriContract();
+                contract.setKategoriAdi(resultSet.getString("kategoriAdi"));
+                contract.setParentId(resultSet.getInt("parentId"));
+                datacontract.add(contract);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return datacontract;
     }
 
 

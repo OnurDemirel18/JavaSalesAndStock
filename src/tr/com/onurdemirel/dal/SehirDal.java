@@ -55,8 +55,8 @@ public class SehirDal extends ObjectHelper implements DalI<SehirContract>{
     }
 
     @Override
-    public SehirContract Update(SehirContract entity) {
-        return null;
+    public void Update(SehirContract entity) {
+
     }
 
     @Override

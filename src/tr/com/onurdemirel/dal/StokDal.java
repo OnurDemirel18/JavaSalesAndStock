@@ -86,9 +86,9 @@ public class StokDal extends ObjectHelper implements DalI<StokContract> {
     }
 
     @Override
-    public StokContract Update(StokContract entity) {
+    public void Update(StokContract entity) {
 
-        return null;
+
     }
 
     @Override

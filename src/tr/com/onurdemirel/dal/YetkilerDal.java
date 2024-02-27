@@ -54,8 +54,8 @@ public class YetkilerDal extends ObjectHelper implements DalI<Yetkiler> {
     }
 
     @Override
-    public Yetkiler Update(Yetkiler entity) {
-        return null;
+    public void Update(Yetkiler entity) {
+
     }
 
     @Override
